@@ -1,41 +1,38 @@
 # 项目环境配置
 
-## YOLOv5su推理项目专用环境
+## Conda 环境
 
-### 环境名称
-`yolo_env`
-
-### 需要安装的包
 ```bash
 # 创建环境
 conda create -n yolo_env python=3.12
-
-# 激活环境
 conda activate yolo_env
 
 # 安装依赖
-pip install opencv-python>=4.5.0
-pip install onnxruntime>=1.0.0
-pip install numpy>=1.18.0
-pip install PyYAML>=5.4.0
-pip install onnx>=1.10.0
-pip install onnxsim
-pip install onnxruntime-tools
-pip install onnxconverter-common
-pip install sympy>=1.6
+pip install opencv-python onnxruntime onnx onnxsim PyYAML sympy openvino
 ```
 
-### 使用方法
+## 推送代码到 GitHub（国内需代理）
+
+通过 furalike 建立 SSH 隧道：
+
 ```bash
-# 在使用项目前激活环境
-conda activate yolo_env
+# 后台建立 SOCKS5 隧道
+ssh -f -N -D 1080 furalike
 
-# 运行项目
-cd /home/chenwei/Workspace/05-Projects/02-YOLO-End2End-Python
-python run_inference.py --model models/yolov5su_fp32.onnx --image data/zidane.jpg
+# 通过隧道推送（--force 因历史已用 filter-branch 重写）
+ALL_PROXY=socks5://127.0.0.1:1080 git push --force origin master
+
+# 关闭隧道
+pkill -f "ssh -f -N -D 1080 furalike"
 ```
 
-### 注意事项
-- 不要再使用 `env` 目录下的虚拟环境
-- 所有项目相关的Python包都应在 `yolo_env` 环境中安装
-- 确保每次运行项目前都激活了正确的环境
+## 项目结构
+
+```
+05-Projects/
+├── 00-data/          校准 + 测试数据
+├── 01-models/        FP32 + INT8 模型
+├── 02-tools/         量化、对比、验证脚本
+├── 03-yolo-cpp/      C++ OpenVINO 推理
+└── 04-yolo-python/   Python ONNX Runtime 推理
+```
