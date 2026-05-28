@@ -36,7 +36,7 @@ bash build.sh
 
 | Model Type | Shared Location | Status |
 |------------|----------------|--------|
-| FP32 | ../00-Models/yolov5su_fp32.onnx | ✅ Verified (8 detections) |
+| FP32 | ../00-Models/yolov5su_fp32.onnx | ✅ Verified (3 detections, matches Python) |
 | INT8 | ../00-Models/yolov5su_int8.onnx | ⚠️ Not supported on CPU (requires special execution provider) |
 
 Models are shared via `../00-Models/` directory at the project root level.
