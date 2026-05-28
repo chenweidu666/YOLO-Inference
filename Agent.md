@@ -8,7 +8,8 @@ conda create -n yolo_env python=3.12
 conda activate yolo_env
 
 # 安装依赖
-pip install opencv-python onnxruntime onnx onnxsim PyYAML sympy openvino
+pip install opencv-python openvino onnx onnxsim PyYAML sympy
+# 02-tools 量化脚本另需: pip install onnxruntime
 ```
 
 ## 推送代码到 GitHub（国内需代理）
@@ -34,5 +35,5 @@ pkill -f "ssh -f -N -D 1080 furalike"
 ├── 01-models/        FP32 + INT8 模型
 ├── 02-tools/         量化、对比、验证脚本
 ├── 03-yolo-cpp/      C++ OpenVINO 推理
-└── 04-yolo-python/   Python ONNX Runtime 推理
+└── 04-yolo-python/   Python OpenVINO 推理
 ```

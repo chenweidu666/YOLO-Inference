@@ -1,9 +1,4 @@
 opencv-python>=4.5.0
-onnxruntime>=1.0.0
+openvino>=2024.0.0
 numpy>=1.18.0
 PyYAML>=5.4.0
-onnx>=1.10.0
-onnxsim
-onnxruntime-tools
-onnxconverter-common
-sympy>=1.6

@@ -7,16 +7,15 @@
 | 项目 | 描述 | 后端 | 模型支持 |
 |------|------|------|---------|
 | [03-yolo-cpp](./03-yolo-cpp) | YOLOv5su C++ 推理 | OpenVINO | FP32 / INT8 |
-| [04-yolo-python](./04-yolo-python) | YOLOv5su Python 推理 | ONNX Runtime | FP32 / INT8 |
+| [04-yolo-python](./04-yolo-python) | YOLOv5su Python 推理 | OpenVINO | FP32 / INT8 |
 | [05-yolo-c](./05-yolo-c) | YOLOv5su **纯 C** 推理 | OpenVINO C API | FP32 / INT8 |
 
 ## zidane.jpg 测试结果
 
 | 实现 | 模型 | 检测数 | 物体 |
 |------|------|--------|------|
-| Python ONNX | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
-| Python ONNX | INT8 | 3 | sports ball 0.911, person 0.859, person 0.840 |
-| C++ ONNX Runtime | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
+| Python OpenVINO | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
+| Python OpenVINO | INT8 | 3 | sports ball 0.911, person 0.859, person 0.840 |
 | C++ OpenVINO | FP32 | 3 | sports ball 0.893, person 0.864, person 0.832 |
 | C++ OpenVINO | INT8 | 3 | sports ball 0.911, person 0.857, person 0.839 |
 | **C OpenVINO API** | FP32 | 3 | 与 C++ OpenVINO 一致 |
@@ -36,4 +35,3 @@
 
 - Python: `yolo_env` (conda, `/home/chenwei/miniconda3/envs/yolo_env`)
 - OpenVINO: 2026.2.0
-- ONNX Runtime: 1.26.0

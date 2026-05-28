@@ -1,6 +1,6 @@
 # YOLOv5su Python Inference
 
-YOLOv5su目标检测单张图片推理，基于 ONNX Runtime，支持多种精度模型（FP32/INT8）。
+YOLOv5su 目标检测单张图片推理，基于 **OpenVINO**，支持 FP32 / INT8 ONNX 模型。
 
 ## Project Structure
 

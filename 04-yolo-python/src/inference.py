@@ -6,9 +6,10 @@ Simple and Clean YOLOv5-SU Single Image Inference
 import os
 import cv2
 import numpy as np
-import onnxruntime as ort
 import argparse
 from typing import List, Tuple, Dict
+
+from openvino import Core
 
 
 class YOLOv5SU:
@@ -16,12 +17,15 @@ class YOLOv5SU:
     Clean YOLOv5-SU Inference Pipeline for single image
     """
     
-    def __init__(self, model_path: str, conf_threshold: float = 0.25, iou_threshold: float = 0.45):
+    def __init__(self, model_path: str, conf_threshold: float = 0.25, iou_threshold: float = 0.45,
+                 device: str = "CPU"):
         self.conf_threshold = conf_threshold
         self.iou_threshold = iou_threshold
-        
-        # Load ONNX model
-        self.session = ort.InferenceSession(model_path, providers=['CPUExecutionProvider'])
+        self.device = device
+
+        core = Core()
+        self.compiled = core.compile_model(model_path, device)
+        self.infer_request = self.compiled.create_infer_request()
         
         # Model properties
         self.img_size = 640
@@ -38,7 +42,7 @@ class YOLOv5SU:
             'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
         ]
         
-        print(f"Model loaded: {model_path}")
+        print(f"Model loaded (OpenVINO/{device}): {model_path}")
     
     def preprocess(self, image: np.ndarray) -> Tuple[np.ndarray, Tuple[float, float, float, int, int]]:
         h, w = image.shape[:2]
@@ -164,7 +168,7 @@ class YOLOv5SU:
             image_path: Path to input image
             output_path: Path to save output image (optional)
             json_path: Path to save post-processed JSON results (optional)
-            raw_npy_path: Path to save raw ONNX output as numpy array (optional)
+            raw_npy_path: Path to save raw model output as numpy array (optional)
             
         Returns:
             List of detection dictionaries
@@ -180,16 +184,14 @@ class YOLOv5SU:
         # Preprocess
         input_tensor, info = self.preprocess(image)
         
-        # Run inference
-        outputs = self.session.run(None, {self.session.get_inputs()[0].name: input_tensor})
-        predictions = outputs[0]
-        
-        # Save raw ONNX output if requested
+        # Run inference (OpenVINO)
+        self.infer_request.infer({0: input_tensor})
+        predictions = self.infer_request.get_output_tensor(0).data
+
+        # Save raw model output if requested
         if raw_npy_path:
-            import numpy as np
-            # Save the raw numpy array directly as .npy file
             np.save(raw_npy_path, predictions)
-            print(f"Raw ONNX output saved as numpy array: {raw_npy_path}")
+            print(f"Raw model output saved as numpy array: {raw_npy_path}")
         
         # Postprocess
         detections = self.postprocess(predictions, info)
@@ -244,7 +246,8 @@ def main():
     parser.add_argument('--image', type=str, required=True, help='Input image path')
     parser.add_argument('--output', type=str, help='Output image path')
     parser.add_argument('--json-output', type=str, help='Post-processed JSON output path')
-    parser.add_argument('--raw-npy-output', type=str, help='Raw ONNX output as numpy array (.npy)')
+    parser.add_argument('--raw-npy-output', type=str, help='Raw model output as numpy array (.npy)')
+    parser.add_argument('--device', type=str, default='CPU', help='OpenVINO device (e.g. CPU)')
     parser.add_argument('--benchmark', action='store_true', help='Run benchmark and measure inference time')
     parser.add_argument('--conf-threshold', type=float, default=0.25, help='Confidence threshold')
     parser.add_argument('--iou-threshold', type=float, default=0.45, help='IoU threshold for NMS')
@@ -286,7 +289,7 @@ def main():
     os.makedirs(output_subdir, exist_ok=True)
     
     # Run detection
-    detector = YOLOv5SU(args.model, args.conf_threshold, args.iou_threshold)
+    detector = YOLOv5SU(args.model, args.conf_threshold, args.iou_threshold, args.device)
     
     if args.benchmark:
         import time
