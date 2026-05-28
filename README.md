@@ -18,8 +18,8 @@
 | Python OpenVINO | INT8 | 3 | sports ball 0.911, person 0.859, person 0.840 |
 | C++ OpenVINO | FP32 | 3 | sports ball 0.893, person 0.864, person 0.832 |
 | C++ OpenVINO | INT8 | 3 | sports ball 0.911, person 0.857, person 0.839 |
-| **C OpenVINO API** | FP32 | 3 | 与 C++ OpenVINO 一致 |
-| **C OpenVINO API** | INT8 | 3 | 与 C++ OpenVINO 一致 |
+| **C OpenVINO API** | FP32 | 3 | sports ball 0.893, person 0.864, person 0.818 |
+| **C OpenVINO API** | INT8 | 3 | sports ball 0.912, person 0.861, person 0.838 |
 
 所有方案均检测到相同的 3 个物体，置信度差异在可接受范围内。
 
