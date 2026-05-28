@@ -4,40 +4,35 @@
 
 | 项目 | 状态 |
 |------|------|
-| 模型共享 | ✅ 00-Models/ (FP32/INT8) |
-| 数据共享 | ✅ 00-Data/ |
-| 工具脚本 | ✅ 00-Tools/ (量化/对比等) |
-| Python推理 | ✅ FP32/INT8 均正常 |
-| CPP推理 | ✅ FP32 正常 (3个检测，与Python一致) |
-| CPP INT8 | ❌ 待解决 |
+| 模型共享 | ✅ 01-models/ (FP32/INT8) |
+| 数据共享 | ✅ 00-data/ (COCO128校准集) |
+| 工具脚本 | ✅ 02-tools/ (量化/对比等) |
+| Python推理 | ✅ FP32/INT8 均正常 (ONNX Runtime) |
+| CPP推理 (ONNX) | ✅ FP32 正常 (3个检测，与Python一致) |
+| CPP推理 (OpenVINO) | ✅ FP32 + INT8 均正常 (3个检测) |
 
-## INT8 CPP推理问题
+## C++ 推理框架
 
-### 问题描述
-ONNX Runtime CPU Execution Provider不支持 `ConvInteger`/`DynamicQuantizeLinear` 算子。动态量化生成的INT8模型无法在CPU上运行。
+| 后端 | 模型支持 | 状态 |
+|------|---------|------|
+| ONNX Runtime | FP32 | ✅ 3 detections |
+| OpenVINO | FP32 | ✅ 3 detections (精度与ONNX一致) |
+| OpenVINO | INT8 (动态量化) | ✅ 3 detections (精度与FP32一致) |
 
-错误信息：
-```
-Could not find an implementation for ConvInteger(10) node
-```
+## zidane.jpg 测试结果对比
 
-### 尝试的方案
+| 实现 | 模型 | 检测数 | 物体 |
+|------|------|--------|------|
+| Python ONNX | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
+| Python ONNX | INT8 | 3 | sports ball 0.911, person 0.859, person 0.840 |
+| C++ ONNX Runtime | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
+| C++ OpenVINO | FP32 | 3 | sports ball 0.893, person 0.864, person 0.832 |
+| C++ OpenVINO | INT8 | 3 | sports ball 0.911, person 0.857, person 0.839 |
 
-#### 方案1: 静态量化 QOperator 格式 ✅ 模型可加载，但精度为0
-- `QuantFormat.QOperator` + `per_channel=False`
-- 模型9.02MB，CPU EP加载成功
-- ❌ 检测到0个物体（校准数据不足）
+所有方案在 zidane.jpg 上均检测到相同的 3 个物体（类别ID一致），置信度差异在可接受范围内。
 
-#### 方案2: 静态量化 QDQ + 升级opset ❌ DequantizeLinear axis错误
-- `QuantFormat.QDQ` + `per_channel=True`
-- 模型原opset=12，不支持DequantizeLinear的axis属性（opset13+）
-- `quant_pre_process` 未能正确升级opset
+## 环境
 
-### 根因
-1. 原始模型 opset=12，算子集过旧
-2. YOLOv5su输出格式特殊（84维，无obj_conf），量化校准需匹配
-
-### 下一步方向
-- 手动升级模型opset后再静态量化
-- 或使用 OpenVINO EP 加载动态量化模型
-- 或探索 QOperator + 充分校准数据
+- Python: `yolo_env` (conda, /home/chenwei/miniconda3/envs/yolo_env)
+- OpenVINO: 2026.2.0 (via pip install openvino)
+- ONNX Runtime: 1.26.0
