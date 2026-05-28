@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -88,8 +89,27 @@ int main(int argc, char* argv[]) {
     std::string output_path = output_dir + image_filename + "_result.jpg";
 
     cv::imwrite(output_path, result);
+    std::cout << "Saved image to " << output_path << std::endl;
+
+    // Save JSON results
+    std::string json_path = output_dir + image_filename + "_result.json";
+    std::ofstream json_file(json_path);
+    json_file << "{\n  \"count\": " << scaled_dets.size() << ",\n  \"detections\": [\n";
+    for (size_t i = 0; i < scaled_dets.size(); ++i) {
+        const auto& d = scaled_dets[i];
+        json_file << "    {\n";
+        json_file << "      \"bbox\": [" << d.x1 << ", " << d.y1 << ", " << d.x2 << ", " << d.y2 << "],\n";
+        json_file << "      \"confidence\": " << d.confidence << ",\n";
+        json_file << "      \"class_id\": " << d.class_id << "\n";
+        json_file << "    }";
+        if (i < scaled_dets.size() - 1) json_file << ",";
+        json_file << "\n";
+    }
+    json_file << "  ]\n}\n";
+    json_file.close();
+    std::cout << "Saved JSON to " << json_path << std::endl;
+
     std::cout << "========================================" << std::endl;
-    std::cout << "Saved result to " << output_path << std::endl;
     std::cout << "Final detected objects: " << scaled_dets.size() << std::endl;
     std::cout << "========================================" << std::endl;
 
