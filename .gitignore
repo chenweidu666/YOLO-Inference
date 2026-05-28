@@ -1,0 +1,16 @@
+# 编译产物
+build/
+*.o
+*.out
+*.bin
+
+# ONNX Runtime 缓存
+*.onnx.lock
+
+# 输出图片（可保留示例）
+# output/
+
+# IDE/编辑器
+.vscode/
+.idea/
+*.swp
