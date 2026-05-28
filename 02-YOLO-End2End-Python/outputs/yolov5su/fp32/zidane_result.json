@@ -1,5 +1,5 @@
 {
-  "image_path": "data/zidane.jpg",
+  "image_path": "../00-Data/zidane.jpg",
   "detections": [
     {
       "bbox": [
