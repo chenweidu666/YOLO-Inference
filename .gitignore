@@ -12,7 +12,7 @@ build/
 
 # COCO128 数据集（不提交，本地下载）
 00-data/coco128/
-00-data/coco128/
+
 
 # IDE/编辑器
 .vscode/

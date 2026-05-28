@@ -1,4 +1,4 @@
-# 05-Projects
+# 05-YOLO-Inference
 
 计算机视觉与机器学习项目集合。
 
@@ -6,8 +6,9 @@
 
 | 项目 | 描述 | 后端 | 模型支持 |
 |------|------|------|---------|
-| [03-yolo-cpp](./03-yolo-cpp) | YOLOv5su C++ 推理 | ONNX Runtime + OpenVINO | FP32 / INT8 |
+| [03-yolo-cpp](./03-yolo-cpp) | YOLOv5su C++ 推理 | OpenVINO | FP32 / INT8 |
 | [04-yolo-python](./04-yolo-python) | YOLOv5su Python 推理 | ONNX Runtime | FP32 / INT8 |
+| [05-yolo-c](./05-yolo-c) | YOLOv5su **纯 C** 推理 | OpenVINO C API | FP32 / INT8 |
 
 ## zidane.jpg 测试结果
 
@@ -18,6 +19,8 @@
 | C++ ONNX Runtime | FP32 | 3 | sports ball 0.893, person 0.865, person 0.829 |
 | C++ OpenVINO | FP32 | 3 | sports ball 0.893, person 0.864, person 0.832 |
 | C++ OpenVINO | INT8 | 3 | sports ball 0.911, person 0.857, person 0.839 |
+| **C OpenVINO API** | FP32 | 3 | 与 C++ OpenVINO 一致 |
+| **C OpenVINO API** | INT8 | 3 | 与 C++ OpenVINO 一致 |
 
 所有方案均检测到相同的 3 个物体，置信度差异在可接受范围内。
 
@@ -25,7 +28,7 @@
 
 | 路径 | 内容 |
 |------|------|
-| [01-models](./01-models) | yolov5su FP32 + INT8 模型 (45M) |
+| [01-models](./01-models) | yolov5su FP32 + INT8 模型 |
 | [00-data](./00-data) | COCO128 校准集 + zidane.jpg |
 | [02-tools](./02-tools) | 量化、对比、验证脚本 |
 
