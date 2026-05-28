@@ -41,8 +41,8 @@ def preprocess(image, img_size=640):
 
 def main():
     # Load models
-    fp32_session = ort.InferenceSession("models/yolov5su_fp32.onnx", providers=['CPUExecutionProvider'])
-    int8_session = ort.InferenceSession("models/yolov5su_int8.onnx", providers=['CPUExecutionProvider'])
+    fp32_session = ort.InferenceSession("../00-Models/yolov5su_fp32.onnx", providers=['CPUExecutionProvider'])
+    int8_session = ort.InferenceSession("../00-Models/yolov5su_int8.onnx", providers=['CPUExecutionProvider'])
     
     # Load and preprocess image
     image = cv2.imread("data/zidane.jpg")

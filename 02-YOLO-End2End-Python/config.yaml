@@ -1,6 +1,6 @@
 # YOLOv5-SU Configuration
 model:
-  path: "models/yolov5su_fp32.onnx"
+  path: "../00-Models/yolov5su_fp32.onnx"
   input_size: [640, 640]
 
 inference:

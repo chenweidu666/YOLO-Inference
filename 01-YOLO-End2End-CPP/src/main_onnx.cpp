@@ -4,6 +4,8 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #include "preprocess.h"
 #include "postprocess.h"
@@ -16,7 +18,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::string image_path = argv[1];
-    std::string model_path = (argc > 2) ? argv[2] : "/home/test/Downloads/yolov5s.onnx";
+    std::string model_path = (argc > 2) ? argv[2] : "../00-Models/yolov5su_fp32.onnx";
     std::string device = (argc > 3) ? argv[3] : "cpu";
 
     std::cout << "========================================" << std::endl;
@@ -50,7 +52,8 @@ int main(int argc, char* argv[]) {
 
     std::cout << "[MAIN] Postprocessing (C++): decode + NMS + scale..." << std::endl;
     int num_classes = 80;
-    int num_outputs_per_pred = 5 + num_classes;
+    // Output: [1, 84, 8400] where 84 = 4(bbox) + 80(classes), no separate obj_conf
+    int num_outputs_per_pred = 4 + num_classes;
     int num_predictions = output_data.size() / num_outputs_per_pred;
     
     std::cout << "[MAIN] Calculated: num_predictions=" << num_predictions 
@@ -66,7 +69,24 @@ int main(int argc, char* argv[]) {
     cv::Mat result = image.clone();
     draw_detections(result, scaled_dets);
 
-    std::string output_path = "output/result.jpg";
+    // Generate output path following same structure as Python project
+    std::string model_filename = fs::path(model_path).filename().string();
+    std::string model_arch = "yolov5su";
+    std::string precision = "fp32";
+
+    // Parse model filename: yolov5su_fp32.onnx -> arch=yolov5su, precision=fp32
+    size_t last_underscore = model_filename.rfind('_');
+    if (last_underscore != std::string::npos) {
+        size_t dot_pos = model_filename.rfind('.');
+        model_arch = model_filename.substr(0, last_underscore);
+        precision = model_filename.substr(last_underscore + 1, dot_pos - last_underscore - 1);
+    }
+
+    std::string image_filename = fs::path(image_path).stem().string();
+    std::string output_dir = "outputs/" + model_arch + "/" + precision + "/";
+    fs::create_directories(output_dir);
+    std::string output_path = output_dir + image_filename + "_result.jpg";
+
     cv::imwrite(output_path, result);
     std::cout << "========================================" << std::endl;
     std::cout << "Saved result to " << output_path << std::endl;

@@ -55,9 +55,8 @@ std::vector<Detection> postprocess(
               << ", iou_thresh=" << iou_thresh
               << ", min_size=" << min_size << std::endl;
 
-    // Output shape is [1, 84, 8400], so we need to index differently
-    // 84 = 4 (bbox) + 1 (obj) + 80 (classes)
-    const int num_outputs = 4 + 1 + num_classes;
+    // Output shape is [1, 84, 8400], 84 = 4(bbox) + 80(classes), no obj_conf
+    const int num_outputs = 4 + num_classes;
 
     // Print first few raw predictions to understand data layout
     std::cout << "[POSTPROCESS] Raw prediction samples (first 5 anchors):" << std::endl;
@@ -67,11 +66,9 @@ std::vector<Detection> postprocess(
         float cy = predictions[i + 1 * num_predictions];
         float w = predictions[i + 2 * num_predictions];
         float h = predictions[i + 3 * num_predictions];
-        float obj_conf = predictions[i + 4 * num_predictions];
         std::cout << "  Anchor " << i << ": cx=" << std::fixed << std::setprecision(3) << cx
-                  << ", cy=" << cy << ", w=" << w << ", h=" << h
-                  << ", obj_conf=" << obj_conf;
-        std::cout << ", class0=" << predictions[i + 5 * num_predictions] << std::endl;
+                  << ", cy=" << cy << ", w=" << w << ", h=" << h;
+        std::cout << ", cls_0=" << predictions[i + 4 * num_predictions] << std::endl;
     }
 
     std::vector<BoxWithClass> candidates;
@@ -81,18 +78,16 @@ std::vector<Detection> postprocess(
         float cy = predictions[i + 1 * num_predictions];
         float w = predictions[i + 2 * num_predictions];
         float h = predictions[i + 3 * num_predictions];
-        float obj_conf = sigmoid(predictions[i + 4 * num_predictions]);
 
-        if (obj_conf < conf_thresh) continue;
-
+        // YOLOv5su output: [cx, cy, w, h, cls_0..cls_79] (84 values), no obj_conf
+        // Class scores are already sigmoided (range 0-1)
         int best_class = -1;
         float best_score = 0.0f;
 
         for (int c = 0; c < num_classes; ++c) {
-            float cls_score = sigmoid(predictions[i + (5 + c) * num_predictions]);
-            float final_score = cls_score * obj_conf;
-            if (final_score > best_score) {
-                best_score = final_score;
+            float cls_score = predictions[i + (4 + c) * num_predictions];
+            if (cls_score > best_score) {
+                best_score = cls_score;
                 best_class = c;
             }
         }

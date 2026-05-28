@@ -88,8 +88,8 @@ def count_detections(model_path, image_path, conf_threshold=0.25):
 def main():
     # Define model paths
     models_info = [
-        ("models/yolov5su_fp32.onnx", "FP32"),
-        ("models/yolov5su_int8.onnx", "INT8")
+        ("../00-Models/yolov5su_fp32.onnx", "FP32"),
+        ("../00-Models/yolov5su_int8.onnx", "INT8")
     ]
     
     image_path = "data/zidane.jpg"

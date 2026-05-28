@@ -168,9 +168,9 @@ def test_model_accuracy(original_model_path, quantized_model_path, image_path, t
 
 def main():
     # Define paths
-    original_model_path = "models/yolov5su_fp32.onnx"
-    fp16_model_path = "models/yolov5su_fp16.onnx"
-    int8_model_path = "models/yolov5su_int8.onnx"
+    original_model_path = "../00-Models/yolov5su_fp32.onnx"
+    fp16_model_path = "../00-Models/yolov5su_fp16.onnx"
+    int8_model_path = "../00-Models/yolov5su_int8.onnx"
     test_image_path = "data/zidane.jpg"
     
     print("Model Quantization Process")

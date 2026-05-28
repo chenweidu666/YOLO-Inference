@@ -240,7 +240,7 @@ class YOLOv5SU:
 
 def main():
     parser = argparse.ArgumentParser(description='Simple YOLOv5-SU Single Image Inference')
-    parser.add_argument('--model', type=str, default='models/yolov5su_fp32.onnx', help='Path to ONNX model')
+    parser.add_argument('--model', type=str, default='../00-Models/yolov5su_fp32.onnx', help='Path to ONNX model')
     parser.add_argument('--image', type=str, required=True, help='Input image path')
     parser.add_argument('--output', type=str, help='Output image path')
     parser.add_argument('--json-output', type=str, help='Post-processed JSON output path')
