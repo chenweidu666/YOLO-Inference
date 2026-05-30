@@ -9,6 +9,7 @@
 | [03-yolo-cpp](./03-yolo-cpp) | YOLOv5su C++ 推理 | OpenVINO | FP32 / INT8 |
 | [04-yolo-python](./04-yolo-python) | YOLOv5su Python 推理 | OpenVINO | FP32 / INT8 |
 | [05-yolo-c](./05-yolo-c) | YOLOv5su **纯 C** 推理 | OpenVINO C API | FP32 / INT8 |
+| [06-npu-golden-test](./06-npu-golden-test) | NPU golden I/O 离线验证 | ONNX Runtime | input_0.dat 固定输入 |
 
 ## zidane.jpg 测试结果
 

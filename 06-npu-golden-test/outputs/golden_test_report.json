@@ -1,0 +1,297 @@
+{
+  "input": {
+    "input_dat": "/home/chenwei/Workspace/01-SmallModel/deploy_intranet/3-yolo_inference/deploy/models/yolov5su/input_0.dat",
+    "model_input_npy": "/home/chenwei/Workspace/01-SmallModel/output/yolov5su/model_input.npy",
+    "match": true,
+    "max_diff": 0,
+    "avg_diff": 0.0
+  },
+  "tensor_compare": {
+    "npu_vs_acuity": {
+      "name": "npu_golden_vs_acuity",
+      "mae": 18.725305557250977,
+      "max_abs": 637.33935546875,
+      "cosine": 0.01453961572177444
+    },
+    "onnx_fp32": {
+      "name": "onnx_fp32_vs_acuity",
+      "mae": 1.0283362865447998,
+      "max_abs": 489.77777099609375,
+      "cosine": 0.989524606218123
+    },
+    "onnx_int8": {
+      "name": "onnx_int8_vs_acuity",
+      "mae": 1.038260579109192,
+      "max_abs": 498.0157775878906,
+      "cosine": 0.9892855195959175
+    }
+  },
+  "detections": {
+    "onnx_int8": [
+      {
+        "anchor": 8201,
+        "class_id": 5,
+        "class_name": "bus",
+        "confidence": 0.777335524559021,
+        "bbox": [
+          0.220855712890625,
+          17.95549774169922,
+          43.94224166870117,
+          170.7564697265625
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 8271,
+        "class_id": 0,
+        "class_name": "person",
+        "confidence": 0.7454367876052856,
+        "bbox": [
+          167.28158569335938,
+          65.27352905273438,
+          199.45782470703125,
+          226.88491821289062
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 7668,
+        "class_id": 28,
+        "class_name": "suitcase",
+        "confidence": 0.48808538913726807,
+        "bbox": [
+          208.26785278320312,
+          153.27145385742188,
+          244.37744140625,
+          216.52865600585938
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 7509,
+        "class_id": 28,
+        "class_name": "suitcase",
+        "confidence": 0.48649781942367554,
+        "bbox": [
+          213.61578369140625,
+          128.82815551757812,
+          252.38775634765625,
+          161.89645385742188
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 3560,
+        "class_id": 2,
+        "class_name": "car",
+        "confidence": 0.4190409481525421,
+        "bbox": [
+          153.0587158203125,
+          98.66778564453125,
+          173.31781005859375,
+          116.40228271484375
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 3678,
+        "class_id": 2,
+        "class_name": "car",
+        "confidence": 0.2914184629917145,
+        "bbox": [
+          308.36517333984375,
+          102.62474060058594,
+          317.92645263671875,
+          114.85700988769531
+        ],
+        "source": "onnx_int8"
+      },
+      {
+        "anchor": 7878,
+        "class_id": 28,
+        "class_name": "suitcase",
+        "confidence": 0.2520397901535034,
+        "bbox": [
+          302.98175048828125,
+          215.059814453125,
+          319.79656982421875,
+          249.31298828125
+        ],
+        "source": "onnx_int8"
+      }
+    ],
+    "acuity_ref": [
+      {
+        "anchor": 7515,
+        "class_id": 32,
+        "class_name": "sports ball",
+        "confidence": 0.9140142202377319,
+        "bbox": [
+          258.5662841796875,
+          131.61788940429688,
+          288.86376953125,
+          184.3662109375
+        ],
+        "source": "acuity_ref"
+      },
+      {
+        "anchor": 8207,
+        "class_id": 0,
+        "class_name": "person",
+        "confidence": 0.9024388790130615,
+        "bbox": [
+          2.2728424072265625,
+          -35.5614013671875,
+          231.0033416748047,
+          246.61962890625
+        ],
+        "source": "acuity_ref"
+      },
+      {
+        "anchor": 8213,
+        "class_id": 0,
+        "class_name": "person",
+        "confidence": 0.801881730556488,
+        "bbox": [
+          105.86660766601562,
+          -46.58587646484375,
+          304.2901916503906,
+          248.8978271484375
+        ],
+        "source": "acuity_ref"
+      }
+    ],
+    "npu_golden": [
+      {
+        "anchor": 0,
+        "class_id": 75,
+        "class_name": "vase",
+        "confidence": 637.33935546875,
+        "bbox": [
+          1.8745274543762207,
+          -72.4993667602539,
+          8.122953414916992,
+          -55.003780364990234
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 1,
+        "class_id": 71,
+        "class_name": "sink",
+        "confidence": 637.33935546875,
+        "bbox": [
+          3.749053955078125,
+          -62.501888275146484,
+          28.742755889892578,
+          -35.008819580078125
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 2,
+        "class_id": 67,
+        "class_name": "cell phone",
+        "confidence": 637.33935546875,
+        "bbox": [
+          14.371377944946289,
+          -53.129249572753906,
+          55.610984802246094,
+          -9.390274047851562
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 3,
+        "class_id": 63,
+        "class_name": "laptop",
+        "confidence": 637.33935546875,
+        "bbox": [
+          21.244647979736328,
+          -46.88082504272461,
+          78.73016357421875,
+          14.353744506835938
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 4,
+        "class_id": 59,
+        "class_name": "bed",
+        "confidence": 637.33935546875,
+        "bbox": [
+          29.99243927001953,
+          -38.757877349853516,
+          102.47417449951172,
+          38.72259521484375
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 5,
+        "class_id": 55,
+        "class_name": "cake",
+        "confidence": 637.33935546875,
+        "bbox": [
+          36.240867614746094,
+          -31.884605407714844,
+          126.21819305419922,
+          61.841766357421875
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 6,
+        "class_id": 51,
+        "class_name": "carrot",
+        "confidence": 637.33935546875,
+        "bbox": [
+          44.36381912231445,
+          -23.761653900146484,
+          150.58705139160156,
+          86.21063232421875
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 7,
+        "class_id": 47,
+        "class_name": "apple",
+        "confidence": 637.33935546875,
+        "bbox": [
+          54.361297607421875,
+          -14.389019012451172,
+          175.58074951171875,
+          111.82917785644531
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 8,
+        "class_id": 43,
+        "class_name": "knife",
+        "confidence": 637.33935546875,
+        "bbox": [
+          60.609718322753906,
+          -6.266059875488281,
+          199.32476806640625,
+          136.19802856445312
+        ],
+        "source": "npu_golden"
+      },
+      {
+        "anchor": 9,
+        "class_id": 39,
+        "class_name": "bottle",
+        "confidence": 637.33935546875,
+        "bbox": [
+          66.23331451416016,
+          0.6072006225585938,
+          223.69363403320312,
+          161.81655883789062
+        ],
+        "source": "npu_golden"
+      }
+    ]
+  }
+}
